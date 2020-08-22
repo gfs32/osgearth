@@ -4,19 +4,44 @@
 #include <osgDB/ReadFile>
 #include <osgViewer/api/Win32/GraphicsWindowWin32>
 #include <osgGA/TrackballManipulator>
-
 #include <osgEarth/MapNode>
 #include <osgEarthUtil/Sky>
 #include <osgEarthUtil/EarthManipulator>
-
 #include <osg/MatrixTransform>
 #include <osg/PositionAttitudeTransform>
 #include <osg/AnimationPath>
 #include <osgEarth/ImageLayer>
-
+#include <osgEarthAnnotation/PlaceNode>
 #include <osgEarthUtil/Controls>
+#include <osgEarth/GeoData>
+
+#include <osg/ShapeDrawable>
+#include <osg/PolygonMode>
+#include <osg/Shape>
+#include <osg/Geode>
+
+#include <osg/Group>
+#include <osg/Camera>
+#include <osg/Geometry>
+#include <osg/Notify>
+#include <osgEarthUtil/ExampleResources>
+#include <osgEarthAnnotation/FeatureNode>
+#include <osgViewer/CompositeViewer>
+#include <osgEarthDrivers/gdal/GDALOptions>
+#include <osgEarthDrivers/mbtiles/MBTilesOptions>
+
+#include <osgEarthUtil/AutoClipPlaneHandler>
+
+#include <osgUtil/SmoothingVisitor>
+#include <osg/LineWidth>
 
 #include "LabelControlEventHandler.h"
+
+using namespace std;
+using namespace osgEarth;
+using namespace osgEarth::Util;
+using namespace osgEarth::Annotation;
+using namespace osgEarth::Drivers;
 
 class OSGObject
 {
@@ -41,10 +66,13 @@ public:
 	void rmvChinaBoundaryes();
 	void addChinaBoundaryes();
 
+	//新增地标
+	void addLabel();
+
 	//添加显示视点信息的控件
 	void addViewPointLabel();
 
-	CLabelControlEventHandler *labelEvent;
+	CLabelControlEventHandler * labelEvent;
 
 	//飞往
 	void FlyTo(double lon, double lat, double hei);
@@ -54,18 +82,19 @@ public:
 	osg::ref_ptr<osg::CoordinateSystemNode> csn;
 
 public:
-	osg::ref_ptr<osg::Node> airport;
+	//osg::ref_ptr<osg::Node> airport;
 	osg::ref_ptr<osg::MatrixTransform> mtAirport;
 
 	//设置机场
 	void addAirport();
 
 	osg::ref_ptr<osg::Node> flyAirport;
+	//osg::ref_ptr<osgEarth::Annotation::PlaceNode> flyAirport;
 	osg::ref_ptr<osg::MatrixTransform> mtFlySelf;
 	osg::ref_ptr<osg::MatrixTransform> mtfly;
 
 
-private:
+public:
 	HWND m_hwnd;
 	osgViewer::Viewer * mViewer;
 	osg::ref_ptr<osg::Group> mRoot;
@@ -74,10 +103,13 @@ private:
 	osg::ref_ptr<osgEarth::Util::EarthManipulator> em;
 
 	osg::ref_ptr<osg::Node>  mp;
+	
 	 
+	//国家线图层
 	osg::ref_ptr<osgEarth::ImageLayer> china_boundaries;
 
-
+	//地标
+	osg::ref_ptr<osg::Group> earthLabel;
 
 public:
 	//根据输入的控制点，输出一个路径，控制点格式为（经，纬，高，速）
@@ -97,6 +129,8 @@ public:
 
 	//启动预设置路径
 	void DoPreLineNow();
+
+	//是否跟踪飞行器
 	void isTrackFly(bool btrack);
 
 };

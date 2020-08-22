@@ -6,19 +6,17 @@
 #include <osgEarth/MapNode>
 #include <osgEarthUtil/Controls>
 #include <osgEarthUtil/EarthManipulator>
-
-class CLabelControlEventHandler :
-	public osgGA::GUIEventHandler
+#include <osgEarth/TerrainEngineNode>
+#include <osgEarth/Terrain>
+#include <osgEarth/GeoData>
+class CLabelControlEventHandler :public osgGA::GUIEventHandler
 {
 public:
 	CLabelControlEventHandler(osgEarth::Util::Controls::LabelControl* viewLabel,
 		osgEarth::Util::Controls::LabelControl* mouseLabel,
 		osgEarth::MapNode* mn);
-	~CLabelControlEventHandler(void);
 
 	bool handle(const osgGA::GUIEventAdapter&, osgGA::GUIActionAdapter&);
-
-
 
 private:
 	osgEarth::Util::Controls::LabelControl* viewCoords;

@@ -39,7 +39,6 @@ BEGIN_MESSAGE_MAP(CDigitalEarthView, CView)
 	ON_WM_CREATE()
 	ON_WM_ERASEBKGND()
 	ON_WM_DESTROY()
-	//ON_UPDATE_COMMAND_UI(ID_EDIT2, &CDigitalEarthView::OnChinaBound)
 	ON_COMMAND(ID_BUTTON2, &CDigitalEarthView::OnSetChinaBound)
 	ON_COMMAND(ID_CHECK4, &CDigitalEarthView::OnShowChinaBound)
 	ON_UPDATE_COMMAND_UI(ID_CHECK4, &CDigitalEarthView::OnUpdateShowChinaBound)
@@ -50,10 +49,8 @@ BEGIN_MESSAGE_MAP(CDigitalEarthView, CView)
 	ON_COMMAND(ID_BUTTON3, &CDigitalEarthView::OnButtonFlyto)
 	ON_COMMAND(ID_CHECK_start, &CDigitalEarthView::OnCheck2Start)
 	ON_UPDATE_COMMAND_UI(ID_CHECK_start, &CDigitalEarthView::OnUpdateCheck2Start)
-	ON_COMMAND(ID_CHECK_track, &CDigitalEarthView::OnCheck3)
-	ON_UPDATE_COMMAND_UI(ID_CHECK_track, &CDigitalEarthView::OnUpdateCheck3Track)
-	ON_COMMAND(ID_CHECK2, &CDigitalEarthView::OnCheck2)
-	ON_UPDATE_COMMAND_UI(ID_CHECK2, &CDigitalEarthView::OnUpdateCheck2)
+	ON_COMMAND(ID_CHECK7, &CDigitalEarthView::OnCheck7track)
+	ON_UPDATE_COMMAND_UI(ID_CHECK7, &CDigitalEarthView::OnUpdateCheck7track)
 END_MESSAGE_MAP()
 
 // CDigitalEarthView 构造/析构
@@ -65,9 +62,9 @@ CDigitalEarthView::CDigitalEarthView() noexcept
 	mThreadHandle = 0;
 	isShowChinaBoundary = true;
 	chinaBoundariesOpt = 1.0;
-	/*flylat = 112;
+	flylat = 112;
 	flylon = 33;
-	flyhei = 400000;*/
+	flyhei = 400000;
 	isStartFly = false;
 	isTrack = false;
 }
@@ -162,7 +159,6 @@ BOOL CDigitalEarthView::OnEraseBkgnd(CDC* pDC)
 }
 
 
-
 void CDigitalEarthView::OnDestroy()
 {
 	CView::OnDestroy();
@@ -176,13 +172,10 @@ void CDigitalEarthView::OnDestroy()
 void CDigitalEarthView::OnInitialUpdate()
 {
 	CView::OnInitialUpdate();
-
-	// TODO: 在此添加专用代码和/或调用基类
+    
 	mOSG->InitOSG();
 	mThreadHandle = (HANDLE)_beginthread(&OSGObject::Render, 0, mOSG);
 }
-
-
 
 
 void CDigitalEarthView::OnSetChinaBound()
@@ -190,7 +183,7 @@ void CDigitalEarthView::OnSetChinaBound()
 	CDigitalEarthApp* pApp = (CDigitalEarthApp*)AfxGetApp();
 	CMainFrame* pWnd = (CMainFrame*)pApp->GetMainWnd();
 	CMFCRibbonEdit* edit = dynamic_cast<CMFCRibbonEdit*>(pWnd->m_wndRibbonBar.FindByID(ID_EDIT2));
-
+	
 	if (edit)
 	{
 		CString str = edit->GetEditText();
@@ -199,7 +192,8 @@ void CDigitalEarthView::OnSetChinaBound()
 		double opt = std::atof(STDstr.c_str());
 		if (opt < 0)
 		{
-			MessageBoxW(str, TEXT("世界你好！"), MB_OK | MB_ICONEXCLAMATION);
+			
+			MessageBoxW(str, TEXT("数值为正"), MB_OK | MB_ICONEXCLAMATION);
 			//str.Format("%f", chinaBoundariesOpt);
 			edit->SetEditText(str);
 
@@ -239,7 +233,7 @@ void CDigitalEarthView::OnUpdateShowChinaBound(CCmdUI *pCmdUI)
 
 void CDigitalEarthView::OnChinaBound()
 {
-	// TODO: 在此添加命令处理程序代码
+	 
 }
 
 
@@ -350,7 +344,7 @@ void CDigitalEarthView::OnButtonFlyto()
 
 void CDigitalEarthView::OnCheck2Start()
 {
-	// TODO: 在此添加命令处理程序代码
+	
 	isStartFly = !isStartFly;
 	isTrack = true;
 	mOSG->DoPreLineNow();
@@ -359,32 +353,20 @@ void CDigitalEarthView::OnCheck2Start()
 
 void CDigitalEarthView::OnUpdateCheck2Start(CCmdUI *pCmdUI)
 {
-	// TODO: 在此添加命令更新用户界面处理程序代码
+	
 	pCmdUI->SetCheck(isStartFly);
 }
 
 
-void CDigitalEarthView::OnCheck3()
+void CDigitalEarthView::OnCheck7track()
 {
-
-}
-void CDigitalEarthView::OnUpdateCheck3Track(CCmdUI *pCmdUI)
-{
-
-}
-
-
-void CDigitalEarthView::OnCheck2()
-{
-	// TODO: 在此添加命令处理程序代码
 	isTrack = !isTrack;
 	mOSG->isTrackFly(isTrack);
 }
 
 
-void CDigitalEarthView::OnUpdateCheck2(CCmdUI *pCmdUI)
+void CDigitalEarthView::OnUpdateCheck7track(CCmdUI *pCmdUI)
 {
-	// TODO: 在此添加命令更新用户界面处理程序代码
 	if (isStartFly == false)
 	{
 		pCmdUI->Enable(false);

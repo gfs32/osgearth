@@ -1,25 +1,20 @@
 
 #include "LabelControlEventHandler.h"
 
-#include <osgEarth/TerrainEngineNode>
 
-#include <osgEarth/Terrain>
-
-#include <osgEarth/GeoData>
 
 
 CLabelControlEventHandler::CLabelControlEventHandler(osgEarth::Util::Controls::LabelControl* viewLabel,
 	osgEarth::Util::Controls::LabelControl* mouseLabel,
 	osgEarth::MapNode* mn)
 {
+	 
 	viewCoords = viewLabel;
 	mouseCoords = mouseLabel;
 	mapNode = mn;
 	nodePath.push_back(mapNode->getTerrainEngine());
 }
-CLabelControlEventHandler::~CLabelControlEventHandler(void)
-{
-}
+
 
 
 
@@ -49,6 +44,9 @@ bool CLabelControlEventHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::
 				mapNode->getMapSRS()->getEllipsoid()->convertXYZToLatLongHeight(point.x(),point.y(),point.z(),x,y,z);
 				char wsrc[512];
 				sprintf(wsrc, "Lon:%.2f Lat:%.2f Hei:%.2f", x,y,z);
+				 
+				//MessageBoxW(hwnd,wsrc, TEXT("世界你好！"), MB_OK | MB_ICONEXCLAMATION);
+				//MessageBoxW
 				mouseCoords->setText(wsrc);
 			}
 			//视点坐标

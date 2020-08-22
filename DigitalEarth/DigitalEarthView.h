@@ -60,6 +60,7 @@ public:
 	bool isStartFly;
 	bool isTrack;
 
+
 protected:
 
 // 生成的消息映射函数
@@ -84,13 +85,11 @@ public:
 	afx_msg void OnButtonFlyto();
 	afx_msg void OnCheck2Start();
 	afx_msg void OnUpdateCheck2Start(CCmdUI *pCmdUI);
-	afx_msg void OnCheck3();
-	afx_msg void OnUpdateCheck3Track(CCmdUI *pCmdUI);
-	afx_msg void OnCheck2();
-	afx_msg void OnUpdateCheck2(CCmdUI *pCmdUI);
+	afx_msg void OnCheck7track();
+	afx_msg void OnUpdateCheck7track(CCmdUI *pCmdUI);
 };
 
-#ifndef _DEBUG  // DigitalEarthView.cpp 中的调试版本
+#ifndef _DEBUG  
 inline CDigitalEarthDoc* CDigitalEarthView::GetDocument() const
    { return reinterpret_cast<CDigitalEarthDoc*>(m_pDocument); }
 #endif

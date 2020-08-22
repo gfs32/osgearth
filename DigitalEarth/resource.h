@@ -63,16 +63,17 @@
 #define ID_EDIT4                        32779
 #define ID_EDIT5                        32780
 #define ID_BUTTON3                      32781
-#define ID_CHECK_track                  32784
 #define ID_CHECK_start                  32785
 #define ID_CHECK2                       32786
+#define ID_CHECK5                       32788
+#define ID_CHECK7                       32790
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        310
-#define _APS_NEXT_COMMAND_VALUE         32787
+#define _APS_NEXT_COMMAND_VALUE         32791
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
