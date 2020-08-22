@@ -1,0 +1,33 @@
+Geode {
+  nodeMask 0xffffffff
+  cullingActive TRUE
+  num_drawables 1
+  Geometry {
+    useDisplayList TRUE
+    useVertexBufferObjects FALSE
+    PrimitiveSets 1
+    {
+      DrawArrays QUADS 0 4
+    }
+    VertexArray Vec3Array 4
+    {
+      -1 0 -1
+      1 0 -1
+      1 0 1
+      -1 0 1
+    }
+    NormalBinding OVERALL
+    NormalArray Vec3Array 1
+    {
+      0 -1 0
+    }
+    ColorBinding PER_VERTEX
+    ColorArray Vec4Array 4
+    {
+      1 0 0 1
+      0 0 0 0
+      0 1 0 1
+      1 1 1 1
+    }
+  }
+}
