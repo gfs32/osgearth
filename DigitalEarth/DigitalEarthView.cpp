@@ -177,7 +177,7 @@ void CDigitalEarthView::OnInitialUpdate()
 	mThreadHandle = (HANDLE)_beginthread(&OSGObject::Render, 0, mOSG);
 }
 
-
+//设置透明度
 void CDigitalEarthView::OnSetChinaBound()
 {
 	CDigitalEarthApp* pApp = (CDigitalEarthApp*)AfxGetApp();
@@ -191,27 +191,24 @@ void CDigitalEarthView::OnSetChinaBound()
 		std::string STDstr(CW2A(str.GetString()));
 		double opt = std::atof(STDstr.c_str());
 		if (opt < 0)
-		{
-			
+		{			
 			MessageBoxW(str, TEXT("数值为正"), MB_OK | MB_ICONEXCLAMATION);
 			//str.Format("%f", chinaBoundariesOpt);
 			edit->SetEditText(str);
-
 		}
 		else
 		{
-			//chinaBoundariesOpt = opt;
 			mOSG->setChinaBoundariesOpacity(opt);
 		}
 	}
-
 }
 
-
+//是否显示省界线
 void CDigitalEarthView::OnShowChinaBound()
 {
 	theApp.bNeedModify = TRUE;
 	while (!theApp.bCanModify) Sleep(1);
+
 	isShowChinaBoundary = !isShowChinaBoundary;
 	if (isShowChinaBoundary)
 	{
@@ -221,10 +218,11 @@ void CDigitalEarthView::OnShowChinaBound()
 	{
 		mOSG->rmvChinaBoundaryes();
 	}
+
 	theApp.bNeedModify = FALSE;
 }
 
-
+//更新省界线状态
 void CDigitalEarthView::OnUpdateShowChinaBound(CCmdUI *pCmdUI)
 {
 	pCmdUI->SetCheck(isShowChinaBoundary);
@@ -254,32 +252,26 @@ void CDigitalEarthView::OnFlytoHei()
 	// TODO: 在此添加命令处理程序代码
 }
 
-
+//飞往（经纬高）
 void CDigitalEarthView::OnButtonFlyto()
 {
 	// TODO: 在此添加命令处理程序代码
 	CDigitalEarthApp* pApp = (CDigitalEarthApp*)AfxGetApp();
 	CMainFrame* pWnd = (CMainFrame*)pApp->GetMainWnd();
-
 	{
 		//经度
 		CMFCRibbonEdit*edit = dynamic_cast<CMFCRibbonEdit*>(pWnd->m_wndRibbonBar.FindByID(ID_EDIT3));
-
 		if (edit)
 		{
 			/*CString str = edit->GetEditText();
 			std::string strTemp(str.GetBuffer());
 			double opt = std::atof(strTemp.c_str());*/
-
 			CString str = edit->GetEditText();			
 			std::string STDstr(CW2A(str.GetString()));
 			double opt = std::atof(STDstr.c_str());
-
 			if ((180 < opt) || (opt < -180))
 			{
-				//MessageBox("", "错误", MB_OK | MB_ICONERROR);
 				MessageBoxW(str, TEXT("经度必须介于（-180，180）之间"), MB_OK | MB_ICONEXCLAMATION);
-				//str.Format("%f", flylon);
 				edit->SetEditText(str);
 				return;
 			}
@@ -293,7 +285,6 @@ void CDigitalEarthView::OnButtonFlyto()
 	{
 		//纬度
 		CMFCRibbonEdit*edit = dynamic_cast<CMFCRibbonEdit*>(pWnd->m_wndRibbonBar.FindByID(ID_EDIT4));
-
 		if (edit)
 		{
 			CString str = edit->GetEditText();
@@ -301,8 +292,7 @@ void CDigitalEarthView::OnButtonFlyto()
 			double opt = std::atof(STDstr.c_str());
 			if ((90 < opt) || (opt < -90))
 			{
-				//MessageBox("经度必须介于（-90，90）之间", "错误", MB_OK | MB_ICONERROR);
-				//str.Format("%f", flylat);
+				MessageBoxW(str,TEXT("经度必须介于（-90，90）之间"),  MB_OK | MB_ICONERROR);
 				edit->SetEditText(str);
 				return;
 			}
@@ -317,7 +307,6 @@ void CDigitalEarthView::OnButtonFlyto()
 	{
 		//高度
 		CMFCRibbonEdit*edit = dynamic_cast<CMFCRibbonEdit*>(pWnd->m_wndRibbonBar.FindByID(ID_EDIT5));
-
 		if (edit)
 		{
 			CString str = edit->GetEditText();
@@ -325,8 +314,7 @@ void CDigitalEarthView::OnButtonFlyto()
 			double opt = std::atof(STDstr.c_str());
 			if (opt < 0)
 			{
-				//MessageBox("经度必须为正值", "错误", MB_OK | MB_ICONERROR);
-				//str.Format("%f", flyhei);
+				MessageBoxW(str,TEXT("经度必须为正值"), MB_OK | MB_ICONERROR);
 				edit->SetEditText(str);
 				return;
 			}
@@ -335,19 +323,24 @@ void CDigitalEarthView::OnButtonFlyto()
 				flyhei = opt;
 			}
 		}
-
 	}
-
 	mOSG->FlyTo(flylon, flylat, flyhei);
 }
 
-
+//启动
 void CDigitalEarthView::OnCheck2Start()
 {
-	
+	theApp.bNeedModify = TRUE;
+	while (!theApp.bCanModify) Sleep(1);
+
 	isStartFly = !isStartFly;
 	isTrack = true;
-	mOSG->DoPreLineNow();
+	for (int i = 0; i < 100; i++) 
+	{
+		mOSG->DoPreLineNow();
+	}
+	
+	theApp.bNeedModify = FALSE;
 }
 
 
@@ -357,7 +350,7 @@ void CDigitalEarthView::OnUpdateCheck2Start(CCmdUI *pCmdUI)
 	pCmdUI->SetCheck(isStartFly);
 }
 
-
+//跟踪
 void CDigitalEarthView::OnCheck7track()
 {
 	isTrack = !isTrack;
@@ -373,7 +366,6 @@ void CDigitalEarthView::OnUpdateCheck7track(CCmdUI *pCmdUI)
 		pCmdUI->SetCheck(false);
 		isTrack = false;
 	}
-
 	else
 	{
 		pCmdUI->SetCheck(isTrack);

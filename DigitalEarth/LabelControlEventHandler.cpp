@@ -1,29 +1,27 @@
-
 #include "LabelControlEventHandler.h"
 
-
-
-
-CLabelControlEventHandler::CLabelControlEventHandler(osgEarth::Util::Controls::LabelControl* viewLabel,
+CLabelControlEventHandler::CLabelControlEventHandler(
+	osgEarth::Util::Controls::LabelControl* viewLabel,
 	osgEarth::Util::Controls::LabelControl* mouseLabel,
 	osgEarth::MapNode* mn)
-{
-	 
+{	 
 	viewCoords = viewLabel;
 	mouseCoords = mouseLabel;
 	mapNode = mn;
 	nodePath.push_back(mapNode->getTerrainEngine());
 }
 
+CLabelControlEventHandler::~CLabelControlEventHandler(void)
+{
 
-
+}
 
 bool CLabelControlEventHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa)
 {
 	osgViewer::Viewer *viewer = dynamic_cast<osgViewer::Viewer*>(&aa);
 	if (viewer)
 	{
-		if (ea.getEventType()==ea.FRAME)
+		if (ea.getEventType() == ea.MOVE || ea.getEventType() == ea.DRAG)
 		{
 			osgUtil::LineSegmentIntersector::Intersections results;
 			if (viewer->computeIntersections(ea.getX(), ea.getY(), nodePath, results))
@@ -43,15 +41,11 @@ bool CLabelControlEventHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::
 				//屏幕坐标转经纬度
 				mapNode->getMapSRS()->getEllipsoid()->convertXYZToLatLongHeight(point.x(),point.y(),point.z(),x,y,z);
 				char wsrc[512];
-				sprintf(wsrc, "Lon:%.2f Lat:%.2f Hei:%.2f", x,y,z);
-				 
-				//MessageBoxW(hwnd,wsrc, TEXT("世界你好！"), MB_OK | MB_ICONEXCLAMATION);
-				//MessageBoxW
+				sprintf(wsrc, "Lon:%.2f Lat:%.2f Hei:%.2f", x,y,z);				 
 				mouseCoords->setText(wsrc);
 			}
 			//视点坐标
 			osgEarth::Util::EarthManipulator* em = dynamic_cast<osgEarth::Util::EarthManipulator*>(viewer->getCameraManipulator());
-
 			if (em)
 			{
 				osgEarth::Viewpoint vp = em->getViewpoint();
@@ -63,7 +57,7 @@ bool CLabelControlEventHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::
 		}
 		if (ea.getEventType() == ea.KEYDOWN)
 		{
-			/*osgEarth::Util::EarthManipulator * em = dynamic_cast<osgEarth::Util::EarthManipulator*>(viewer->getCameraManipulator());
+			osgEarth::Util::EarthManipulator * em = dynamic_cast<osgEarth::Util::EarthManipulator*>(viewer->getCameraManipulator());
 			osgEarth::Viewpoint vm = em ->getViewpoint();
 			double fx = vm.focalPoint().get().x();
 			double fy = vm.focalPoint().get().y();
@@ -71,7 +65,6 @@ bool CLabelControlEventHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::
 			double heading_deg = vm.getHeading();
 			double pitch_deg = vm.getPitch();
 			double range = vm.getRange();
-
 
 			if(ea.getKey() == 'P')
 			{
@@ -121,9 +114,8 @@ bool CLabelControlEventHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::
 			{
 			    range -= 1000;
 			}
-
 			em->setViewpoint(osgEarth::Viewpoint("qre",fx, fy, fz, heading_deg, pitch_deg, range));
-		*/}
+		}
 	}
 	return false;
 }

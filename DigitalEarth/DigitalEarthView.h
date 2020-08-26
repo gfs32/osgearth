@@ -31,7 +31,6 @@ public:
 	OSGObject* mOSG;
 	HANDLE mThreadHandle;
 
-	double chinaBoundariesOpt;
 // 操作
 public:
 
@@ -51,17 +50,15 @@ public:
 
 public:
 	//自定义变量区
+	//是否显示省界线
 	BOOL isShowChinaBoundary;
-
+	//省界线宽度
+	double chinaBoundariesOpt;
 	//飞往
 	double flylat, flylon, flyhei;
-
 	//是否启动预设置路径
 	bool isStartFly;
 	bool isTrack;
-
-
-protected:
 
 // 生成的消息映射函数
 protected:
@@ -74,7 +71,7 @@ public:
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	afx_msg void OnDestroy();
 	virtual void OnInitialUpdate();
-	
+	//自动生成的视图工具事件类
 	afx_msg void OnSetChinaBound();
 	afx_msg void OnShowChinaBound();
 	afx_msg void OnUpdateShowChinaBound(CCmdUI *pCmdUI);

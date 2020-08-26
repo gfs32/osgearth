@@ -55,10 +55,7 @@ public:
 	void PreFrameUpdate();
 	void PostFrameUpdate();
 	static void Render(void* ptr);
-
 	void InitOsgEarth();
-
-	osgViewer::Viewer *getViewer();
 
 	void setChinaBoundariesOpacity(double opt);
 	double getChinaBoundariesOpacity();
@@ -72,6 +69,7 @@ public:
 	//添加显示视点信息的控件
 	void addViewPointLabel();
 
+	//坐标控件
 	CLabelControlEventHandler * labelEvent;
 
 	//飞往
@@ -82,21 +80,21 @@ public:
 	osg::ref_ptr<osg::CoordinateSystemNode> csn;
 
 public:
-	//osg::ref_ptr<osg::Node> airport;
-	osg::ref_ptr<osg::MatrixTransform> mtAirport;
 
-	//设置机场
+	osg::ref_ptr<osg::MatrixTransform> mtAirport;
+	
 	void addAirport();
 
 	osg::ref_ptr<osg::Node> flyAirport;
 	//osg::ref_ptr<osgEarth::Annotation::PlaceNode> flyAirport;
 	osg::ref_ptr<osg::MatrixTransform> mtFlySelf;
 	osg::ref_ptr<osg::MatrixTransform> mtfly;
-
+	osg::ref_ptr<osg::Vec4Array> vaTemp;
 
 public:
 	HWND m_hwnd;
-	osgViewer::Viewer * mViewer;
+	osgViewer::Viewer *getViewer();
+	osgViewer::Viewer *mViewer;
 	osg::ref_ptr<osg::Group> mRoot;
 	
 	osg::ref_ptr<osgEarth::MapNode> mapNode;
@@ -104,14 +102,14 @@ public:
 
 	osg::ref_ptr<osg::Node>  mp;
 	
-	 
-	//国家线图层
+	//省界线图层
 	osg::ref_ptr<osgEarth::ImageLayer> china_boundaries;
 
 	//地标
 	osg::ref_ptr<osg::Group> earthLabel;
 
 public:
+
 	//根据输入的控制点，输出一个路径，控制点格式为（经，纬，高，速）
 	osg::AnimationPath* CreateAirLinePath(osg::Vec4Array* ctrl);
 

@@ -9,13 +9,15 @@
 #include <osgEarth/TerrainEngineNode>
 #include <osgEarth/Terrain>
 #include <osgEarth/GeoData>
+
 class CLabelControlEventHandler :public osgGA::GUIEventHandler
 {
 public:
-	CLabelControlEventHandler(osgEarth::Util::Controls::LabelControl* viewLabel,
+	CLabelControlEventHandler(
+		osgEarth::Util::Controls::LabelControl* viewLabel,
 		osgEarth::Util::Controls::LabelControl* mouseLabel,
 		osgEarth::MapNode* mn);
-
+	~CLabelControlEventHandler(void);
 	bool handle(const osgGA::GUIEventAdapter&, osgGA::GUIActionAdapter&);
 
 private:
