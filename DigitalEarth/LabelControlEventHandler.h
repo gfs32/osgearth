@@ -9,6 +9,7 @@
 #include <osgEarth/TerrainEngineNode>
 #include <osgEarth/Terrain>
 #include <osgEarth/GeoData>
+#include <osgEarthUtil/LatLongFormatter>
 
 class CLabelControlEventHandler :public osgGA::GUIEventHandler
 {

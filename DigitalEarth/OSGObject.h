@@ -14,12 +14,10 @@
 #include <osgEarthAnnotation/PlaceNode>
 #include <osgEarthUtil/Controls>
 #include <osgEarth/GeoData>
-
 #include <osg/ShapeDrawable>
 #include <osg/PolygonMode>
 #include <osg/Shape>
 #include <osg/Geode>
-
 #include <osg/Group>
 #include <osg/Camera>
 #include <osg/Geometry>
@@ -29,11 +27,13 @@
 #include <osgViewer/CompositeViewer>
 #include <osgEarthDrivers/gdal/GDALOptions>
 #include <osgEarthDrivers/mbtiles/MBTilesOptions>
-
 #include <osgEarthUtil/AutoClipPlaneHandler>
-
 #include <osgUtil/SmoothingVisitor>
 #include <osg/LineWidth>
+#include <osgEarthUtil/MouseCoordsTool>
+#include <osgEarthUtil/LatLongFormatter>
+
+
 
 #include "LabelControlEventHandler.h"
 
@@ -90,16 +90,18 @@ public:
 	osg::ref_ptr<osg::MatrixTransform> mtFlySelf;
 	osg::ref_ptr<osg::MatrixTransform> mtfly;
 	osg::ref_ptr<osg::Vec4Array> vaTemp;
+	osg::ref_ptr<osg::Vec3dArray> vertices;
+	//osg::ref_ptr<osg::Vec3dArray> vertices1;
 
 public:
 	HWND m_hwnd;
 	osgViewer::Viewer *getViewer();
 	osgViewer::Viewer *mViewer;
 	osg::ref_ptr<osg::Group> mRoot;
-	
+	osg::ref_ptr<osg::MatrixTransform> maxax;
 	osg::ref_ptr<osgEarth::MapNode> mapNode;
 	osg::ref_ptr<osgEarth::Util::EarthManipulator> em;
-
+	
 	osg::ref_ptr<osg::Node>  mp;
 	
 	//省界线图层
@@ -130,5 +132,11 @@ public:
 
 	//是否跟踪飞行器
 	void isTrackFly(bool btrack);
+
+	//链接数据库
+	void connectMysql(); 
+	
+	//轨道
+	void OrbitsThread( );
 
 };

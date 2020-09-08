@@ -25,23 +25,14 @@ bool CLabelControlEventHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::
 		{
 			osgUtil::LineSegmentIntersector::Intersections results;
 			if (viewer->computeIntersections(ea.getX(), ea.getY(), nodePath, results))
-			{
-				osgUtil::LineSegmentIntersector::Intersection first = *(results.begin());
-				//取出交点坐标(osg的x,y,z坐标)
-				osg::Vec3d point = first.getWorldIntersectPoint();
-				//osg::Vec3d lla;
-				double x;
-				double y;
-				double z;
-
-				////转化为地球的地理坐标
-				//osgEarth::GeoPoint mapPoint;
-				//mapPoint.fromWorld(mapNode->getTerrain()->getSRS(), point);
-
-				//屏幕坐标转经纬度
-				mapNode->getMapSRS()->getEllipsoid()->convertXYZToLatLongHeight(point.x(),point.y(),point.z(),x,y,z);
+			{				
+				osg::Vec3d point = results.begin()->getWorldIntersectPoint();		
+				/*osgEarth::GeoPoint mapPoint;
+				mapPoint.fromWorld(mapNode->getTerrain()->getSRS(), point);*/
+				osgEarth::GeoPoint mapPointGeodetic;
+				mapPointGeodetic.fromWorld(mapNode->getMapSRS(),point);				
 				char wsrc[512];
-				sprintf(wsrc, "Lon:%.2f Lat:%.2f Hei:%.2f", x,y,z);				 
+				sprintf(wsrc, "Lon:%.2f Lat:%.2f Hei:%.2f", mapPointGeodetic.x(), mapPointGeodetic.y(), mapPointGeodetic.z());
 				mouseCoords->setText(wsrc);
 			}
 			//视点坐标
@@ -49,13 +40,13 @@ bool CLabelControlEventHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::
 			if (em)
 			{
 				osgEarth::Viewpoint vp = em->getViewpoint();
-				char wsrc[512];
-				sprintf(wsrc, "Lon:%.2f Lat:%.2f Hei:%.2f", vp.focalPoint().get().x(), vp.focalPoint().get().y(), vp.getRange());
-				//sprintf(wsrc, "(%.2f, %.2f, %.2f), %.2f, %.2f, %.2f", vp.focalPoint().get().x(), vp.focalPoint().get().y(), vp.focalPoint().get().z(), vp.getHeading(), vp.getPitch(), vp.getRange());
-				viewCoords->setText(wsrc);
+				char wsrc1[512];
+				//sprintf(wsrc1, "Lon:%.2f Lat:%.2f Haiba:%.2f", vp.focalPoint().get().x(), vp.focalPoint().get().y(), vp.getRange());
+				sprintf(wsrc1, "%.2f, %.2f, %.2f, %.2f, %.2f",vp.focalPoint().value().x(), vp.focalPoint().value().y(), vp.getHeading(), vp.getPitch(), vp.getRange());
+				viewCoords->setText(wsrc1);
 			}
 		}
-		if (ea.getEventType() == ea.KEYDOWN)
+		/*if (ea.getEventType() == ea.KEYDOWN)
 		{
 			osgEarth::Util::EarthManipulator * em = dynamic_cast<osgEarth::Util::EarthManipulator*>(viewer->getCameraManipulator());
 			osgEarth::Viewpoint vm = em ->getViewpoint();
@@ -115,7 +106,7 @@ bool CLabelControlEventHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::
 			    range -= 1000;
 			}
 			em->setViewpoint(osgEarth::Viewpoint("qre",fx, fy, fz, heading_deg, pitch_deg, range));
-		}
+		}*/
 	}
 	return false;
 }

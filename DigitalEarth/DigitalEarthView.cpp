@@ -335,11 +335,7 @@ void CDigitalEarthView::OnCheck2Start()
 
 	isStartFly = !isStartFly;
 	isTrack = true;
-	for (int i = 0; i < 100; i++) 
-	{
-		mOSG->DoPreLineNow();
-	}
-	
+	mOSG->DoPreLineNow();
 	theApp.bNeedModify = FALSE;
 }
 
