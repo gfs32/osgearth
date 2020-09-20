@@ -32,9 +32,8 @@
 #include <osg/LineWidth>
 #include <osgEarthUtil/MouseCoordsTool>
 #include <osgEarthUtil/LatLongFormatter>
-
-
-
+#include <osgEarthUtil/LogarithmicDepthBuffer>
+#include <osgGA/NodeTrackerManipulator>
 #include "LabelControlEventHandler.h"
 
 using namespace std;
@@ -89,18 +88,20 @@ public:
 	//osg::ref_ptr<osgEarth::Annotation::PlaceNode> flyAirport;
 	osg::ref_ptr<osg::MatrixTransform> mtFlySelf;
 	osg::ref_ptr<osg::MatrixTransform> mtfly;
-	osg::ref_ptr<osg::Vec4Array> vaTemp;
-	osg::ref_ptr<osg::Vec3dArray> vertices;
+	//osg::ref_ptr<osg::Vec4Array> vaTemp;
+	
 	//osg::ref_ptr<osg::Vec3dArray> vertices1;
 
 public:
 	HWND m_hwnd;
+	//OSGObject* mOSG;
 	osgViewer::Viewer *getViewer();
 	osgViewer::Viewer *mViewer;
 	osg::ref_ptr<osg::Group> mRoot;
 	osg::ref_ptr<osg::MatrixTransform> maxax;
 	osg::ref_ptr<osgEarth::MapNode> mapNode;
 	osg::ref_ptr<osgEarth::Util::EarthManipulator> em;
+	osg::ref_ptr < osgGA::NodeTrackerManipulator> tm;
 	
 	osg::ref_ptr<osg::Node>  mp;
 	
@@ -135,8 +136,14 @@ public:
 
 	//链接数据库
 	void connectMysql(); 
+
+	//自动化入库
+	void automation();
 	
 	//轨道
-	void OrbitsThread( );
+	static void OrbitsThread(void * ptr );
+
+	//轨迹
+	static void flyThread(void * ptr);
 
 };

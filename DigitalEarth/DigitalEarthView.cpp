@@ -175,6 +175,10 @@ void CDigitalEarthView::OnInitialUpdate()
     
 	mOSG->InitOSG();
 	mThreadHandle = (HANDLE)_beginthread(&OSGObject::Render, 0, mOSG);
+	/*Sleep(1000);
+	(HANDLE)_beginthread(&OSGObject::OrbitsThread, 0, mOSG);
+	Sleep(1000);
+	(HANDLE)_beginthread(&OSGObject::flyThread, 0, mOSG);*/
 }
 
 //设置透明度
