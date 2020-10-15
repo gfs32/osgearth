@@ -27,8 +27,6 @@ bool CLabelControlEventHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::
 			if (viewer->computeIntersections(ea.getX(), ea.getY(), nodePath, results))
 			{				
 				osg::Vec3d point = results.begin()->getWorldIntersectPoint();		
-				/*osgEarth::GeoPoint mapPoint;
-				mapPoint.fromWorld(mapNode->getTerrain()->getSRS(), point);*/
 				osgEarth::GeoPoint mapPointGeodetic;
 				mapPointGeodetic.fromWorld(mapNode->getMapSRS(),point);				
 				char wsrc[512];
@@ -41,18 +39,16 @@ bool CLabelControlEventHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::
 			{
 				osgEarth::Viewpoint vp = em->getViewpoint();
 				char wsrc1[512];
-				//sprintf(wsrc1, "Lon:%.2f Lat:%.2f Haiba:%.2f", vp.focalPoint().get().x(), vp.focalPoint().get().y(), vp.getRange());
 				sprintf(wsrc1, "%.2f, %.2f, %.2f, %.2f, %.2f",vp.focalPoint().value().x(), vp.focalPoint().value().y(), vp.getHeading(), vp.getPitch(), vp.getRange());
 				viewCoords->setText(wsrc1);
 			}
 		}
-		/*if (ea.getEventType() == ea.KEYDOWN)
+		if (ea.getEventType() == ea.KEYDOWN)
 		{
 			osgEarth::Util::EarthManipulator * em = dynamic_cast<osgEarth::Util::EarthManipulator*>(viewer->getCameraManipulator());
 			osgEarth::Viewpoint vm = em ->getViewpoint();
 			double fx = vm.focalPoint().get().x();
-			double fy = vm.focalPoint().get().y();
-			double fz = vm.focalPoint().get().z();
+			double fy = vm.focalPoint().get().y();			
 			double heading_deg = vm.getHeading();
 			double pitch_deg = vm.getPitch();
 			double range = vm.getRange();
@@ -71,15 +67,7 @@ bool CLabelControlEventHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::
 			}
 			else if(ea.getKey() == 'o')
 			{
-			    fy ++;
-			}
-			else if(ea.getKey() == 'I')
-			{
-			    fz ++;
-			}
-			else if(ea.getKey() == 'i')
-			{
-			    fz --;
+			    fy --;
 			}
 			else if(ea.getKey() == 'U')
 			{
@@ -105,8 +93,8 @@ bool CLabelControlEventHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::
 			{
 			    range -= 1000;
 			}
-			em->setViewpoint(osgEarth::Viewpoint("qre",fx, fy, fz, heading_deg, pitch_deg, range));
-		}*/
+			em->setViewpoint(osgEarth::Viewpoint("",fx, fy, 0, heading_deg, pitch_deg, range));
+		}
 	}
 	return false;
 }

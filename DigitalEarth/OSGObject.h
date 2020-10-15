@@ -35,6 +35,8 @@
 #include <osgEarthUtil/LogarithmicDepthBuffer>
 #include <osgGA/NodeTrackerManipulator>
 #include "LabelControlEventHandler.h"
+#include "KeyHandler.h"
+#include "TransformAccumulator.h"
 
 using namespace std;
 using namespace osgEarth;
@@ -62,6 +64,8 @@ public:
 	void rmvChinaBoundaryes();
 	void addChinaBoundaryes();
 
+	//void toggleTankOrbiterView();
+
 	//新增地标
 	void addLabel();
 
@@ -78,19 +82,37 @@ public:
 public:
 	osg::ref_ptr<osg::CoordinateSystemNode> csn;
 
+	//osg::ref_ptr<osg::CoordinateSystemNode> csn1;
+
+	osg::ref_ptr<osgEarth::Annotation::FeatureNode> m_pLakeFeatureNode;
+
 public:
 
-	osg::ref_ptr<osg::MatrixTransform> mtAirport;
-	
-	void addAirport();
+	//bool isPathStart;
+	//osg::ref_ptr<osg::MatrixTransform> mtAirport;
 
-	osg::ref_ptr<osg::Node> flyAirport;
+	void addAirport();
+	void drawLink();
+	void hideLine();
+	void upView();
+	void downView();
+	void leftView();
+	void rightView();
+	void backView();
+	osg::ref_ptr<osg::Group> flyAirport;
+	osg::ref_ptr<osg::Group> flyAirport1;
 	//osg::ref_ptr<osgEarth::Annotation::PlaceNode> flyAirport;
 	osg::ref_ptr<osg::MatrixTransform> mtFlySelf;
+	osg::ref_ptr<osg::MatrixTransform> mtFlySelf1;
+	//osg::ref_ptr<osg::PositionAttitudeTransform> mtFlySelf;
 	osg::ref_ptr<osg::MatrixTransform> mtfly;
+	osg::ref_ptr<osg::MatrixTransform> mtfly1;
+	//osg::ref_ptr<osg::PositionAttitudeTransform> mtfly;
 	//osg::ref_ptr<osg::Vec4Array> vaTemp;
-	
+	osg::ref_ptr<osg::AnimationPathCallback> apcFly;
 	//osg::ref_ptr<osg::Vec3dArray> vertices1;
+
+	//osg::Matrixd* getWorldCoords(osg::Node* node);
 
 public:
 	HWND m_hwnd;
@@ -99,12 +121,12 @@ public:
 	osgViewer::Viewer *mViewer;
 	osg::ref_ptr<osg::Group> mRoot;
 	osg::ref_ptr<osg::MatrixTransform> maxax;
-	osg::ref_ptr<osgEarth::MapNode> mapNode;
-	osg::ref_ptr<osgEarth::Util::EarthManipulator> em;
+	//osg::ref_ptr<osgEarth::MapNode> mapNode;
+	
 	osg::ref_ptr < osgGA::NodeTrackerManipulator> tm;
-	
+
 	osg::ref_ptr<osg::Node>  mp;
-	
+
 	//省界线图层
 	osg::ref_ptr<osgEarth::ImageLayer> china_boundaries;
 
@@ -115,7 +137,7 @@ public:
 
 	//根据输入的控制点，输出一个路径，控制点格式为（经，纬，高，速）
 	osg::AnimationPath* CreateAirLinePath(osg::Vec4Array* ctrl);
-
+	//osg::AnimationPath* CreateAirLinePath1(osg::Vec4Array* ctrl);
 	//两点间的距离公式
 	double GetDis(osg::Vec3 from, osg::Vec3 to);
 
@@ -126,22 +148,22 @@ public:
 	void DoAPreLine();
 
 	//生成的预设置路径
-	osg::ref_ptr<osg::AnimationPath> apc;
+	//osg::ref_ptr<osg::AnimationPath> apc;
 
 	//启动预设置路径
-	void DoPreLineNow();
+	void DoPreLineNow(bool isTart);
 
 	//是否跟踪飞行器
 	void isTrackFly(bool btrack);
 
 	//链接数据库
-	void connectMysql(); 
+	void connectMysql();
 
 	//自动化入库
 	void automation();
-	
+
 	//轨道
-	static void OrbitsThread(void * ptr );
+	static void OrbitsThread(void * ptr);
 
 	//轨迹
 	static void flyThread(void * ptr);

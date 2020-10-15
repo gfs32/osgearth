@@ -51,6 +51,11 @@ BEGIN_MESSAGE_MAP(CDigitalEarthView, CView)
 	ON_UPDATE_COMMAND_UI(ID_CHECK_start, &CDigitalEarthView::OnUpdateCheck2Start)
 	ON_COMMAND(ID_CHECK7, &CDigitalEarthView::OnCheck7track)
 	ON_UPDATE_COMMAND_UI(ID_CHECK7, &CDigitalEarthView::OnUpdateCheck7track)
+	ON_COMMAND(ID_BUTTON4_upView, &CDigitalEarthView::OnButton4)
+	ON_COMMAND(ID_BUTTON5, &CDigitalEarthView::OnButton2diview)
+	ON_COMMAND(ID_BUTTON6, &CDigitalEarthView::OnButton3downview)
+	ON_COMMAND(ID_BUTTON7, &CDigitalEarthView::OnButton7)
+	ON_COMMAND(ID_BUTTON8, &CDigitalEarthView::OnButton8)
 END_MESSAGE_MAP()
 
 // CDigitalEarthView 构造/析构
@@ -175,10 +180,10 @@ void CDigitalEarthView::OnInitialUpdate()
     
 	mOSG->InitOSG();
 	mThreadHandle = (HANDLE)_beginthread(&OSGObject::Render, 0, mOSG);
-	/*Sleep(1000);
+	Sleep(1000);
 	(HANDLE)_beginthread(&OSGObject::OrbitsThread, 0, mOSG);
 	Sleep(1000);
-	(HANDLE)_beginthread(&OSGObject::flyThread, 0, mOSG);*/
+	(HANDLE)_beginthread(&OSGObject::flyThread, 0, mOSG);
 }
 
 //设置透明度
@@ -267,9 +272,6 @@ void CDigitalEarthView::OnButtonFlyto()
 		CMFCRibbonEdit*edit = dynamic_cast<CMFCRibbonEdit*>(pWnd->m_wndRibbonBar.FindByID(ID_EDIT3));
 		if (edit)
 		{
-			/*CString str = edit->GetEditText();
-			std::string strTemp(str.GetBuffer());
-			double opt = std::atof(strTemp.c_str());*/
 			CString str = edit->GetEditText();			
 			std::string STDstr(CW2A(str.GetString()));
 			double opt = std::atof(STDstr.c_str());
@@ -338,8 +340,16 @@ void CDigitalEarthView::OnCheck2Start()
 	while (!theApp.bCanModify) Sleep(1);
 
 	isStartFly = !isStartFly;
-	isTrack = true;
-	mOSG->DoPreLineNow();
+	if (isStartFly)
+	{
+		isTrack = true;
+	}
+	else
+	{
+		isTrack = false;
+	}
+	mOSG->DoPreLineNow(isStartFly);
+
 	theApp.bNeedModify = FALSE;
 }
 
@@ -370,4 +380,37 @@ void CDigitalEarthView::OnUpdateCheck7track(CCmdUI *pCmdUI)
 	{
 		pCmdUI->SetCheck(isTrack);
 	}
+}
+
+void CDigitalEarthView::OnButton4()
+{
+	// TODO: 在此添加命令处理程序代码
+	mOSG->downView();
+}
+
+void CDigitalEarthView::OnButton2diview()
+{
+	// TODO: 在此添加命令处理程序代码
+	mOSG->upView();
+}
+
+
+void CDigitalEarthView::OnButton3downview()
+{
+	// TODO: 在此添加命令处理程序代码
+	mOSG->leftView();
+}
+
+
+void CDigitalEarthView::OnButton7()
+{
+	// TODO: 在此添加命令处理程序代码
+	mOSG->rightView();
+}
+
+
+void CDigitalEarthView::OnButton8()
+{
+	// TODO: 在此添加命令处理程序代码
+	mOSG->backView();
 }

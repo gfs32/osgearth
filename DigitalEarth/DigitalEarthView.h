@@ -84,6 +84,11 @@ public:
 	afx_msg void OnUpdateCheck2Start(CCmdUI *pCmdUI);
 	afx_msg void OnCheck7track();
 	afx_msg void OnUpdateCheck7track(CCmdUI *pCmdUI);
+	afx_msg void OnButton4();
+	afx_msg void OnButton2diview();
+	afx_msg void OnButton3downview();
+	afx_msg void OnButton7();
+	afx_msg void OnButton8();
 };
 
 #ifndef _DEBUG  
