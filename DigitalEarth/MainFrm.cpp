@@ -319,4 +319,3 @@ void CMainFrame::OnOptions()
 	pOptionsDlg->DoModal();
 	delete pOptionsDlg;
 }
-

@@ -3,7 +3,7 @@
 // 供 DigitalEarth.rc 使用
 //
 #define IDD_ABOUTBOX                    100
-#define IDP_OLE_INIT_FAILED             100
+#define IDP_OLE_INIT_FAILED             101
 #define IDB_WRITESMALL                  110
 #define IDB_WRITELARGE                  111
 #define IDB_MAIN                        112
@@ -64,20 +64,19 @@
 #define ID_EDIT5                        32780
 #define ID_BUTTON3                      32781
 #define ID_CHECK_start                  32785
-#define ID_CHECK2                       32786
 #define ID_CHECK7                       32790
-#define ID_BUTTON4_upView               32792
-#define ID_BUTTON5                      32796
 #define ID_BUTTON6                      32797
 #define ID_BUTTON7                      32798
 #define ID_BUTTON8                      32799
+#define ID_BUTTON4                      32807
+#define ID_BUTTON5                      32808
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        310
-#define _APS_NEXT_COMMAND_VALUE         32800
+#define _APS_NEXT_COMMAND_VALUE         32809
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

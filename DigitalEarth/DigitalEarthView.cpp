@@ -42,20 +42,20 @@ BEGIN_MESSAGE_MAP(CDigitalEarthView, CView)
 	ON_COMMAND(ID_BUTTON2, &CDigitalEarthView::OnSetChinaBound)
 	ON_COMMAND(ID_CHECK4, &CDigitalEarthView::OnShowChinaBound)
 	ON_UPDATE_COMMAND_UI(ID_CHECK4, &CDigitalEarthView::OnUpdateShowChinaBound)
-	ON_COMMAND(ID_EDIT2, &CDigitalEarthView::OnChinaBound)
-	ON_COMMAND(ID_EDIT3, &CDigitalEarthView::OnFlytoLon)
-	ON_COMMAND(ID_EDIT4, &CDigitalEarthView::OnFlytoLat)
-	ON_COMMAND(ID_EDIT5, &CDigitalEarthView::OnFlytoHei)
-	ON_COMMAND(ID_BUTTON3, &CDigitalEarthView::OnButtonFlyto)
-	ON_COMMAND(ID_CHECK_start, &CDigitalEarthView::OnCheck2Start)
-	ON_UPDATE_COMMAND_UI(ID_CHECK_start, &CDigitalEarthView::OnUpdateCheck2Start)
+	ON_COMMAND(ID_BUTTON3, &CDigitalEarthView::OnButtonBuildGroundStation)
+	ON_COMMAND(ID_CHECK_start, &CDigitalEarthView::OnCheck2StartFly)
+	ON_UPDATE_COMMAND_UI(ID_CHECK_start, &CDigitalEarthView::OnUpdateCheck2StartFly)
 	ON_COMMAND(ID_CHECK7, &CDigitalEarthView::OnCheck7track)
 	ON_UPDATE_COMMAND_UI(ID_CHECK7, &CDigitalEarthView::OnUpdateCheck7track)
-	ON_COMMAND(ID_BUTTON4_upView, &CDigitalEarthView::OnButton4)
-	ON_COMMAND(ID_BUTTON5, &CDigitalEarthView::OnButton2diview)
-	ON_COMMAND(ID_BUTTON6, &CDigitalEarthView::OnButton3downview)
-	ON_COMMAND(ID_BUTTON7, &CDigitalEarthView::OnButton7)
-	ON_COMMAND(ID_BUTTON8, &CDigitalEarthView::OnButton8)
+	ON_COMMAND(ID_BUTTON6, &CDigitalEarthView::ConnectionStart)
+	ON_COMMAND(ID_BUTTON7, &CDigitalEarthView::ConnectionStop)
+	ON_COMMAND(ID_BUTTON8, &CDigitalEarthView::FirstView)
+	ON_COMMAND(ID_EDIT2, &CDigitalEarthView::OnEdit2)
+	ON_COMMAND(ID_EDIT3, &CDigitalEarthView::OnEdit3)
+	ON_COMMAND(ID_EDIT4, &CDigitalEarthView::OnEdit4)
+	ON_COMMAND(ID_EDIT5, &CDigitalEarthView::OnEdit5)
+	ON_COMMAND(ID_BUTTON4, &CDigitalEarthView::OnButton4Pause)
+	ON_COMMAND(ID_BUTTON5, &CDigitalEarthView::OnButton5Again)
 END_MESSAGE_MAP()
 
 // CDigitalEarthView 构造/析构
@@ -69,9 +69,10 @@ CDigitalEarthView::CDigitalEarthView() noexcept
 	chinaBoundariesOpt = 1.0;
 	flylat = 112;
 	flylon = 33;
-	flyhei = 400000;
+	flyhei = 2000;
 	isStartFly = false;
 	isTrack = false;
+	isPauseSatellite = true;
 }
 
 CDigitalEarthView::~CDigitalEarthView()
@@ -238,31 +239,8 @@ void CDigitalEarthView::OnUpdateShowChinaBound(CCmdUI *pCmdUI)
 }
 
 
-void CDigitalEarthView::OnChinaBound()
-{
-	 
-}
-
-
-void CDigitalEarthView::OnFlytoLon()
-{
-	// TODO: 在此添加命令处理程序代码
-}
-
-
-void CDigitalEarthView::OnFlytoLat()
-{
-	// TODO: 在此添加命令处理程序代码
-}
-
-
-void CDigitalEarthView::OnFlytoHei()
-{
-	// TODO: 在此添加命令处理程序代码
-}
-
-//飞往（经纬高）
-void CDigitalEarthView::OnButtonFlyto()
+//根据坐标建立地面站
+void CDigitalEarthView::OnButtonBuildGroundStation()
 {
 	// TODO: 在此添加命令处理程序代码
 	CDigitalEarthApp* pApp = (CDigitalEarthApp*)AfxGetApp();
@@ -287,7 +265,6 @@ void CDigitalEarthView::OnButtonFlyto()
 			}
 		}
 	}
-
 	{
 		//纬度
 		CMFCRibbonEdit*edit = dynamic_cast<CMFCRibbonEdit*>(pWnd->m_wndRibbonBar.FindByID(ID_EDIT4));
@@ -307,9 +284,7 @@ void CDigitalEarthView::OnButtonFlyto()
 				flylat = opt;
 			}
 		}
-
 	}
-
 	{
 		//高度
 		CMFCRibbonEdit*edit = dynamic_cast<CMFCRibbonEdit*>(pWnd->m_wndRibbonBar.FindByID(ID_EDIT5));
@@ -333,38 +308,30 @@ void CDigitalEarthView::OnButtonFlyto()
 	mOSG->FlyTo(flylon, flylat, flyhei);
 }
 
-//启动
-void CDigitalEarthView::OnCheck2Start()
+//启动近地卫星
+void CDigitalEarthView::OnCheck2StartFly()
 {
 	theApp.bNeedModify = TRUE;
 	while (!theApp.bCanModify) Sleep(1);
 
 	isStartFly = !isStartFly;
-	if (isStartFly)
-	{
-		isTrack = true;
-	}
-	else
-	{
-		isTrack = false;
-	}
 	mOSG->DoPreLineNow(isStartFly);
-
+	
 	theApp.bNeedModify = FALSE;
 }
 
 
-void CDigitalEarthView::OnUpdateCheck2Start(CCmdUI *pCmdUI)
-{
-	
+void CDigitalEarthView::OnUpdateCheck2StartFly(CCmdUI *pCmdUI)
+{	
 	pCmdUI->SetCheck(isStartFly);
 }
 
-//跟踪
+//跟踪近地卫星
 void CDigitalEarthView::OnCheck7track()
 {
 	isTrack = !isTrack;
 	mOSG->isTrackFly(isTrack);
+	
 }
 
 
@@ -379,38 +346,72 @@ void CDigitalEarthView::OnUpdateCheck7track(CCmdUI *pCmdUI)
 	else
 	{
 		pCmdUI->SetCheck(isTrack);
+	}	
+}
+
+
+//卫星与地面站通信链路
+void CDigitalEarthView::ConnectionStart()
+{
+	// TODO: 在此添加命令处理程序代码
+	mOSG->drawLink();
+}
+
+//取消通信
+void CDigitalEarthView::ConnectionStop()
+{
+	// TODO: 在此添加命令处理程序代码
+	mOSG->hideLine();
+}
+
+//跟随模型，第一视角
+void CDigitalEarthView::FirstView()
+{
+	// TODO: 在此添加命令处理程序代码
+	mOSG->firstView();
+}
+
+
+
+void CDigitalEarthView::OnEdit2()
+{
+	// TODO: 在此添加命令处理程序代码
+}
+
+
+void CDigitalEarthView::OnEdit3()
+{
+	// TODO: 在此添加命令处理程序代码
+}
+
+
+void CDigitalEarthView::OnEdit4()
+{
+	// TODO: 在此添加命令处理程序代码
+}
+
+
+void CDigitalEarthView::OnEdit5()
+{
+	// TODO: 在此添加命令处理程序代码
+}
+
+void CDigitalEarthView::OnButton4Pause()
+{
+	if (isPauseSatellite)
+	{
+		mOSG->pause();
+		isPauseSatellite = !isPauseSatellite;
 	}
-}
-
-void CDigitalEarthView::OnButton4()
-{
-	// TODO: 在此添加命令处理程序代码
-	mOSG->downView();
-}
-
-void CDigitalEarthView::OnButton2diview()
-{
-	// TODO: 在此添加命令处理程序代码
-	mOSG->upView();
+	else
+	{
+		mOSG->again();
+		isPauseSatellite = !isPauseSatellite;
+	}	
 }
 
 
-void CDigitalEarthView::OnButton3downview()
+void CDigitalEarthView::OnButton5Again()
 {
-	// TODO: 在此添加命令处理程序代码
-	mOSG->leftView();
-}
-
-
-void CDigitalEarthView::OnButton7()
-{
-	// TODO: 在此添加命令处理程序代码
-	mOSG->rightView();
-}
-
-
-void CDigitalEarthView::OnButton8()
-{
-	// TODO: 在此添加命令处理程序代码
-	mOSG->backView();
+	mOSG->missileStart();
 }

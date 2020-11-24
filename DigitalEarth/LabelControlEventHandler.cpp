@@ -23,27 +23,29 @@ bool CLabelControlEventHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::
 	{
 		if (ea.getEventType() == ea.MOVE || ea.getEventType() == ea.DRAG)
 		{
+			//左下角交点坐标
 			osgUtil::LineSegmentIntersector::Intersections results;
 			if (viewer->computeIntersections(ea.getX(), ea.getY(), nodePath, results))
 			{				
 				osg::Vec3d point = results.begin()->getWorldIntersectPoint();		
 				osgEarth::GeoPoint mapPointGeodetic;
-				mapPointGeodetic.fromWorld(mapNode->getMapSRS(),point);				
+				mapPointGeodetic.fromWorld(mapNode->getMapSRS(),point);		
+				//mapNode->getMap()->worldPointToMapPoint(point, lla);
 				char wsrc[512];
-				sprintf(wsrc, "Lon:%.2f Lat:%.2f Hei:%.2f", mapPointGeodetic.x(), mapPointGeodetic.y(), mapPointGeodetic.z());
+				sprintf(wsrc, "Lon:%.2f Lat:%.2f Alt:%.2f", mapPointGeodetic.x(), mapPointGeodetic.y(), mapPointGeodetic.z());
 				mouseCoords->setText(wsrc);
 			}
-			//视点坐标
+			//右上角视点坐标
 			osgEarth::Util::EarthManipulator* em = dynamic_cast<osgEarth::Util::EarthManipulator*>(viewer->getCameraManipulator());
 			if (em)
 			{
-				osgEarth::Viewpoint vp = em->getViewpoint();
+				osgEarth::Viewpoint vp = em->getViewpoint();//vp.focalPoint().value().x(), vp.focalPoint().value().y(),
 				char wsrc1[512];
-				sprintf(wsrc1, "%.2f, %.2f, %.2f, %.2f, %.2f",vp.focalPoint().value().x(), vp.focalPoint().value().y(), vp.getHeading(), vp.getPitch(), vp.getRange());
+				sprintf(wsrc1, "Heading:%.2f Pitch:%.2f Range:%.2f", vp.getHeading(), vp.getPitch(), vp.getRange());
 				viewCoords->setText(wsrc1);
 			}
 		}
-		if (ea.getEventType() == ea.KEYDOWN)
+		/*if (ea.getEventType() == ea.KEYDOWN)
 		{
 			osgEarth::Util::EarthManipulator * em = dynamic_cast<osgEarth::Util::EarthManipulator*>(viewer->getCameraManipulator());
 			osgEarth::Viewpoint vm = em ->getViewpoint();
@@ -94,7 +96,7 @@ bool CLabelControlEventHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::
 			    range -= 1000;
 			}
 			em->setViewpoint(osgEarth::Viewpoint("",fx, fy, 0, heading_deg, pitch_deg, range));
-		}
+		}*/
 	}
 	return false;
 }

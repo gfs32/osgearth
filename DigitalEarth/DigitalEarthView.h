@@ -58,6 +58,7 @@ public:
 	double flylat, flylon, flyhei;
 	//是否启动预设置路径
 	bool isStartFly;
+	bool isPauseSatellite;
 	bool isTrack;
 
 // 生成的消息映射函数
@@ -75,20 +76,21 @@ public:
 	afx_msg void OnSetChinaBound();
 	afx_msg void OnShowChinaBound();
 	afx_msg void OnUpdateShowChinaBound(CCmdUI *pCmdUI);
-	afx_msg void OnChinaBound();
-	afx_msg void OnFlytoLon();
-	afx_msg void OnFlytoLat();
-	afx_msg void OnFlytoHei();
-	afx_msg void OnButtonFlyto();
-	afx_msg void OnCheck2Start();
-	afx_msg void OnUpdateCheck2Start(CCmdUI *pCmdUI);
+	afx_msg void OnButtonBuildGroundStation();
+	afx_msg void OnCheck2StartFly();
+	afx_msg void OnUpdateCheck2StartFly(CCmdUI *pCmdUI);
 	afx_msg void OnCheck7track();
 	afx_msg void OnUpdateCheck7track(CCmdUI *pCmdUI);
-	afx_msg void OnButton4();
-	afx_msg void OnButton2diview();
-	afx_msg void OnButton3downview();
-	afx_msg void OnButton7();
-	afx_msg void OnButton8();
+	afx_msg void ConnectionStart();
+	afx_msg void ConnectionStop();
+	afx_msg void FirstView();
+	afx_msg void OnEdit2();
+	afx_msg void OnEdit3();
+	afx_msg void OnEdit4();
+	afx_msg void OnEdit5();
+	afx_msg void OnCheck5Pause();
+	afx_msg void OnButton4Pause();
+	afx_msg void OnButton5Again();
 };
 
 #ifndef _DEBUG  

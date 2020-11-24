@@ -48,13 +48,7 @@
     <ClInclude Include="LabelControlEventHandler.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="transformAccumulator.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="KeyHandler.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="ViewControl.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -83,13 +77,7 @@
     <ClCompile Include="LabelControlEventHandler.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="transformAccumulator.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="KeyHandler.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="ViewControl.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

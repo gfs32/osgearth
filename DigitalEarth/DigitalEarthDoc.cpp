@@ -41,7 +41,6 @@ END_MESSAGE_MAP()
 CDigitalEarthDoc::CDigitalEarthDoc() noexcept
 {
 	// TODO: 在此添加一次性构造代码
-
 }
 
 CDigitalEarthDoc::~CDigitalEarthDoc()

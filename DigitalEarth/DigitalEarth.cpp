@@ -138,7 +138,6 @@ BOOL CDigitalEarthApp::InitInstance()
 	ParseCommandLine(cmdInfo);
 
 
-
 	// 调度在命令行中指定的命令。  如果
 	// 用 /RegServer、/Register、/Unregserver 或 /Unregister 启动应用程序，则返回 FALSE。
 	if (!ProcessShellCommand(cmdInfo))
@@ -218,8 +217,3 @@ void CDigitalEarthApp::LoadCustomState()
 void CDigitalEarthApp::SaveCustomState()
 {
 }
-
-// CDigitalEarthApp 消息处理程序
-
-
-

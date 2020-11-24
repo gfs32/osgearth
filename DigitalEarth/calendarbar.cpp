@@ -168,5 +168,3 @@ void CCalendarBar::OnPaint()
 		dc.SelectObject(pOldFont);
 	}
 }
-
-
